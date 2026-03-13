@@ -9,7 +9,7 @@
 
 ## Knowledge Pipeline 知識管線
 
-:::mermaid
+```mermaid
 graph TD
     subgraph "1.Crawl"
         S1[外訓課程] --> C1[01_Courses]
@@ -50,4 +50,4 @@ graph TD
     style REV fill:#e8f5e9,stroke:#388e3c
     style REJ fill:#ffebee,stroke:#d32f2f
     style BOT fill:#f9a825,stroke:#f57f17,color:#000
-:::
+```
