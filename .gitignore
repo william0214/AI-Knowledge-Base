@@ -1,0 +1,34 @@
+# === macOS ===
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# === 編輯器 ===
+.vscode/
+*.swp
+*.swo
+*~
+*.tmp
+*.bak
+
+# === Python ===
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.env
+.venv/
+venv/
+
+# === 大型檔案（保留 .md 說明檔）===
+06_Datasets/*.csv
+06_Datasets/*.json
+06_Datasets/*.parquet
+06_Datasets/*.xlsx
+
+# === Jupyter ===
+.ipynb_checkpoints/
+
+# === 日誌 ===
+*.log
