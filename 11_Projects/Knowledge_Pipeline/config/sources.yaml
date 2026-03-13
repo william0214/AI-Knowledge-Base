@@ -1,0 +1,69 @@
+# Knowledge Pipeline — 知識來源清單
+# 在此管理要追蹤的 YouTube 頻道、網站、RSS 來源
+
+youtube:
+  channels:
+    - name: "3Blue1Brown"
+      url: "https://www.youtube.com/@3blue1brown"
+      tags: ["#Math", "#Visualization"]
+      language: "en"
+
+    - name: "Andrej Karpathy"
+      url: "https://www.youtube.com/@AndrejKarpathy"
+      tags: ["#LLM", "#DeepLearning"]
+      language: "en"
+
+    - name: "Yannic Kilcher"
+      url: "https://www.youtube.com/@YannicKilcher"
+      tags: ["#Paper", "#LLM"]
+      language: "en"
+
+    - name: "StatQuest"
+      url: "https://www.youtube.com/@statquest"
+      tags: ["#ML", "#Statistics"]
+      language: "en"
+
+  # 單一影片也可以手動加入
+  videos: []
+
+websites:
+  blogs:
+    - name: "Lilian Weng's Blog"
+      url: "https://lilianweng.github.io/"
+      tags: ["#LLM", "#Agent"]
+      selector: "article"  # CSS selector for main content
+
+    - name: "Sebastian Raschka"
+      url: "https://sebastianraschka.com/blog/"
+      tags: ["#LLM", "#FineTuning"]
+      selector: "article"
+
+    - name: "Chip Huyen"
+      url: "https://huyenchip.com/blog/"
+      tags: ["#MLOps", "#LLM"]
+      selector: "article"
+
+  docs:
+    - name: "LangChain Docs"
+      url: "https://python.langchain.com/docs/"
+      tags: ["#RAG", "#Agent", "#LangChain"]
+
+    - name: "LlamaIndex Docs"
+      url: "https://docs.llamaindex.ai/"
+      tags: ["#RAG", "#LlamaIndex"]
+
+rss: []
+  # - name: "Hacker News - AI"
+  #   url: "https://hnrss.org/newest?q=LLM+OR+AI+agent"
+  #   tags: ["#Trend"]
+
+# 爬蟲設定
+settings:
+  # 每次爬取的最大數量
+  max_items_per_source: 5
+  # 字幕語言偏好（YouTube）
+  subtitle_languages: ["zh-Hant", "zh-Hans", "en"]
+  # 請求間隔（秒），避免被封鎖
+  request_delay: 2
+  # 輸出目錄
+  output_dir: "../../09_Staging/raw"
