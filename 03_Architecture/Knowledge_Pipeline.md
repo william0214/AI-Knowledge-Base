@@ -8,7 +8,7 @@ Knowledge Pipeline 是一套**六階段**的全感官知識自動化流水線。
 
 ## 系統全貌
 
-:::mermaid
+```mermaid
 graph TD
     subgraph "1.Crawl - 三感官輸入"
         R1[YouTube 字幕] --> YC[youtube_crawler.py]
@@ -70,7 +70,7 @@ graph TD
     style NEO fill:#d1c4e9,stroke:#7b1fa2
     style VDB fill:#b2dfdb,stroke:#00695c
     style ANS fill:#f9a825,stroke:#f57f17,color:#000
-:::
+```
 
 ---
 

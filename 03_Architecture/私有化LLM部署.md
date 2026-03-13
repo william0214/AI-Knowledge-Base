@@ -8,7 +8,7 @@
 
 ## 架構圖
 
-:::mermaid
+```mermaid
 graph TB
     subgraph 模型準備
         A[開源模型<br/>LLaMA/Mistral/Gemma] --> B[QLoRA 微調]
@@ -29,7 +29,7 @@ graph TB
         K[員工對話資料] --> L[RLHF / 自我微調]
         L --> B
     end
-:::
+```
 
 ## 核心流程
 

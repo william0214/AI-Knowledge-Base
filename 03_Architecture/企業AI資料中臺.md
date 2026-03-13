@@ -10,7 +10,7 @@
 
 <!-- 插入或連結 07_Diagrams/ 中的架構圖 -->
 
-:::mermaid
+```mermaid
 graph TB
     subgraph 資料層
         A[MongoDB<br/>非結構化資料] --> D[ETL Pipeline]
@@ -28,7 +28,7 @@ graph TB
         I --> J[API Gateway]
         J --> K[Dashboard / Bot / App]
     end
-:::
+```
 
 ## 核心元件
 

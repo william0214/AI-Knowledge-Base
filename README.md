@@ -45,9 +45,9 @@ graph TD
         P1 --> BOT
     end
 
-    style RAW fill:#e3f2fd,stroke:#1976d2
-    style DIG fill:#fff3e0,stroke:#f57c00
-    style REV fill:#e8f5e9,stroke:#388e3c
-    style REJ fill:#ffebee,stroke:#d32f2f
+    style RAW fill:#e3f2fd,stroke:#1976d2,color:#000
+    style DIG fill:#fff3e0,stroke:#f57c00,color:#000
+    style REV fill:#e8f5e9,stroke:#388e3c,color:#000
+    style REJ fill:#ffebee,stroke:#d32f2f,color:#000
     style BOT fill:#f9a825,stroke:#f57f17,color:#000
 ```
