@@ -3,182 +3,195 @@ title: "中文分詞與 Embedding"
 date: 2026-03-10
 day: Day2
 tags: [NLP, Embedding, Day2]
-status: todo
+status: in-progress
 chapter: "§5, §6"
 ---
 
 # 04 — 中文分詞與 Embedding
 
-> tags: #NLP #Embedding #Day2 #todo
+> tags: #NLP #Embedding #Day2 #in-progress
 > 對應課程章節：§5 Tokenization & Embedding + §6 文章分類與語意理解
+> 原始講義：[PNLP上課筆記_2026-03-09.pdf](assets/PNLP上課筆記_2026-03-09.pdf)
+> 主要來源頁碼：17–24, 33
 
 ---
 
-## 4.1 中文分詞技術
+## 4.1 Jieba 與 CKIP 的中文分詞實務
 
 ### 💡 思考
-- 中文分詞為什麼比英文困難？（沒有天然空格分隔）
-- Ckip、Jieba、HuggingFace Tokenizer 各自的優缺點？
-- 分詞精度對下游 NLP 任務（如情感分析）的影響有多大？
+- 為什麼中文分詞會直接影響後續分類與情感分析？
+- 繁體中文場景下，Jieba 與 CKIP 的選型邏輯是什麼？
 
 ### 📌 重點
-- Jieba 分詞：
-  - 精確模式 / 全模式 / 搜尋引擎模式
-- CKIP Tagger：
-  - 中研院開發，繁體中文專用
-- HuggingFace Tokenizer：
-  - BPE / WordPiece / SentencePiece
-- 
+- 課堂核心分詞工具是 Jieba 與 CKIP Transformers。
+- Jieba 適合快速 baseline、詞頻與 TF-IDF 特徵工程。
+- CKIP 更適合繁體中文，並能延伸到詞性標記與 NER。
 
 ### 🔧 實作
 ```python
-# 來源：
-# 用途：三種分詞工具比較
+# 來源：課程講義 PDF 第 17, 19 頁
+# 用途：Jieba / CKIP 分詞示意
 
-# Jieba
 import jieba
-words_jieba = jieba.cut("自然語言處理是人工智慧的重要領域")
-print("Jieba:", " / ".join(words_jieba))
 
-# CKIP
+words = jieba.cut("自然語言處理是人工智慧的重要領域")
+print(" / ".join(words))
+
 # from ckip_transformers.nlp import CkipWordSegmenter
-# ws_driver = CkipWordSegmenter(model="bert-base")
-# result = ws_driver(["自然語言處理是人工智慧的重要領域"])
-
-# HuggingFace Tokenizer
-# from transformers import AutoTokenizer
-# tokenizer = AutoTokenizer.from_pretrained("bert-base-chinese")
-# tokens = tokenizer.tokenize("自然語言處理是人工智慧的重要領域")
+# ws_driver = CkipWordSegmenter(device=-1)
+# print(ws_driver(["自然語言處理是人工智慧的重要領域"]))
 ```
 
 ### 📚 延伸
 - [Jieba GitHub](https://github.com/fxsjy/jieba)
 - [CKIP Transformers](https://github.com/ckiplab/ckip-transformers)
-- [HuggingFace Tokenizers](https://huggingface.co/docs/tokenizers/)
 
 ---
 
-## 4.2 語意向量化技術 (Word Embedding)
+## 4.2 CKIP Transformers 的分詞、詞性與 NER
 
 ### 💡 思考
-- Word2Vec 的 CBOW 和 Skip-gram 模型有何差異？
-- 為什麼 Word2Vec 能捕捉語意關係（如：國王 - 男人 + 女人 ≈ 女王）？
-- 預訓練 Transformer Embedding 相比 Word2Vec 的優勢？
+- 為什麼 CKIP 在繁體中文 NLP 任務中很有優勢？
+- NER 對企業文件、客服與新聞分析有哪些直接用途？
 
 ### 📌 重點
-- Word2Vec：
-- Doc2Vec：
-- Sentence Transformers：
-- 預訓練模型 Embedding：
-- 
+- CKIP 的主要元件：
+  - `CkipWordSegmenter`
+  - `CkipPosTagger`
+  - `CkipNerChunker`
+- 課堂示例包含人名、組織、地點、日期、貨幣等實體抽取。
 
 ### 🔧 實作
 ```python
-# 來源：
-# 用途：Word2Vec 訓練與語意相似度查詢
+# 來源：課程講義 PDF 第 19-20 頁
+# 用途：CKIP NER 示意
+
+from ckip_transformers.nlp import CkipWordSegmenter, CkipPosTagger, CkipNerChunker
+
+ws_driver = CkipWordSegmenter(device=-1)
+pos_driver = CkipPosTagger(device=-1)
+ner_driver = CkipNerChunker(device=-1)
+```
+
+### 📚 延伸
+- [CKIP 線上 Demo](https://ckip.iis.sinica.edu.tw/service/transformers/)
+
+---
+
+## 4.3 詞性、N-Gram 與字典更新
+
+### 💡 思考
+- 為什麼分詞器需要持續更新字典？
+- N-Gram 除了建模，也能如何回饋分詞品質？
+
+### 📌 重點
+- 課堂列出 Jieba 常見詞性標籤，幫助後續特徵工程與實體辨識。
+- N-Gram 概念包含 Unigram、Bigram、Trigram。
+- 常見做法是從語料中找高共現詞，再回填自定義字典改善新詞切分。
+
+### 🔧 實作
+```python
+# 來源：課程講義 PDF 第 21, 33 頁
+# 用途：N-Gram 概念索引
+
+n_grams = {
+    1: "Unigram",
+    2: "Bigram",
+    3: "Trigram",
+}
+```
+
+### 📚 延伸
+- [NLTK](https://www.nltk.org/)
+
+---
+
+## 4.4 TF-IDF、Word2Vec 與語意向量化
+
+### 💡 思考
+- 稀疏向量與 dense embedding 的應用邊界在哪裡？
+- Word2Vec 適合哪些語意探索任務，而不一定適合哪些分類任務？
+
+### 📌 重點
+- TF-IDF：適合關鍵詞、可解釋分類 baseline、文件相似度初步分析。
+- Word2Vec：適合語意相似詞、人物關係與語義空間探索。
+- 課堂案例包含劇本分析、人物關聯與 Beauty 類別語料。
+
+### 🔧 實作
+```python
+# 來源：課程講義 PDF 第 24 頁
+# 用途：Word2Vec 訓練骨架
 
 from gensim.models import Word2Vec
 
-# sentences = [["自然", "語言", "處理"], ["機器", "學習", "深度", "學習"]]
+# sentences = [["自然語言", "處理"], ["機器學習", "深度學習"]]
 # model = Word2Vec(sentences, vector_size=100, window=5, min_count=1)
-# similar = model.wv.most_similar("自然", topn=5)
 ```
 
 ### 📚 延伸
 - [Gensim Word2Vec](https://radimrehurek.com/gensim/models/word2vec.html)
 - [Sentence Transformers](https://www.sbert.net/)
-- [Word2Vec 論文](https://arxiv.org/abs/1301.3781)
 
 ---
 
-## 4.3 思維鏈推理 (CoT) 在語義關聯推導的應用
+## 4.5 CKIP 效能測試與工具選型
 
 ### 💡 思考
--  (CoT) 如何幫助模型進行多步驟語義推理？
-- CoT 在哪些 NLP 任務中特別有效？
-- Zero-shot CoT vs Few-shot CoT 的差異？
+- 分詞精度與吞吐量，哪一個在企業批次任務更重要？
+- 什麼規模的語料才值得切到 GPU？
 
 ### 📌 重點
-- CoT 原理：
-- 應用場景：
-- Prompt 設計要點：
-- 
+- 課堂提供 CKIP 測試數據：
+  - CPU 1 thread：140s / 100 篇
+  - CPU 24 threads：27s / 100 篇
+  - GPU 3090：24s / 1000 篇
+- 對社群監控、新聞分類或知識管線，GPU 可顯著提升吞吐量。
 
 ### 🔧 實作
 ```python
-# 來源：
-# 用途：CoT Prompt 範例
+# 來源：課程講義 PDF 第 23 頁
+# 用途：保留 CKIP 效能摘要
 
-cot_prompt = """
-請一步一步分析以下文本的語意關聯：
-文本：...
-
-步驟 1：識別關鍵詞
-步驟 2：分析詞彙間的語意關係
-步驟 3：推導整體語意
-"""
+ckip_benchmark = {
+    "cpu_1_thread": "140s / 100 docs",
+    "cpu_24_threads": "27s / 100 docs",
+    "gpu_3090": "24s / 1000 docs",
+}
 ```
 
 ### 📚 延伸
-- [Chain-of-Thought Prompting (論文)](https://arxiv.org/abs/2201.11903)
+- [CKIP Transformers](https://github.com/ckiplab/ckip-transformers)
 
 ---
 
-## 4.4 詞袋模型 (Bag of Words) 與 TF-IDF
+## 4.6 圖表補述：CKIP 效能比較圖
 
 ### 💡 思考
-- BoW 模型為什麼忽略詞序？這在什麼場景下是可接受的？
-- TF-IDF 如何平衡「詞頻」與「文件稀有度」？
-- TF-IDF 的限制是什麼？Embedding 方法如何克服？
+- 效能圖真正要傳達的是單次速度，還是批次吞吐量？
+- 同一套分詞流程在 CPU 與 GPU 上的部署策略，應該如何切分？
 
 ### 📌 重點
-- Bag of Words：
-- TF-IDF 公式：$\text{TF-IDF}(t,d) = \text{TF}(t,d) \times \log\frac{N}{\text{DF}(t)}$
-- 特徵工程：
-- 
+- 講義第 23 頁可視為一張效能趨勢圖：
+  - 橫軸是 CPU thread 數與 GPU 平台。
+  - 縱軸是處理時間。
+- 箭頭關係是：`thread 數增加` -> `CPU 耗時下降`。
+- 另一條對照線是：`3090 GPU` 在更大資料量下仍維持低耗時，代表 GPU 更適合大批量中文斷詞與 NER。
 
 ### 🔧 實作
 ```python
-# 來源：
-# 用途：TF-IDF 特徵提取
+# 來源：課程講義 PDF 第 23 頁
+# 用途：保留圖表數據以支援效能判讀
 
-from sklearn.feature_extraction.text import TfidfVectorizer
-
-# corpus = ["文本一的內容", "文本二的內容", "文本三的內容"]
-# vectorizer = TfidfVectorizer()
-# tfidf_matrix = vectorizer.fit_transform(corpus)
+ckip_benchmark = {
+    "cpu_1_thread": "140s / 100 docs",
+    "cpu_24_threads": "27s / 100 docs",
+    "gpu_3090": "24s / 1000 docs",
+}
 ```
 
 ### 📚 延伸
-- [scikit-learn TfidfVectorizer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html)
-
----
-
-## 4.5 Naive Bayes 與 XGBoost 在文本分類的實戰
-
-### 💡 思考
-- Naive Bayes 為什麼在文本分類上表現不錯？
-- XGBoost 在 NLP 任務中通常扮演什麼角色？
-- 傳統 ML 分類器 vs 深度學習分類器的選擇時機？
-
-### 📌 重點
-- Naive Bayes 分類器：
-- XGBoost：
-- 模型評估指標：Precision / Recall / F1-Score
-- 
-
-### 🔧 實作
-```python
-# 來源：
-# 用途：XGBoost 文本分類
-
-# import xgboost as xgb
-# from sklearn.metrics import classification_report
-
-```
-
-### 📚 延伸
-- [XGBoost 官方文件](https://xgboost.readthedocs.io/)
+- [04_中文分詞與Embedding](04_中文分詞與Embedding.md)
+- [ckip_benchmark.md](diagrams/ckip_benchmark.md)
 
 ---
 

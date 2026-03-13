@@ -3,150 +3,163 @@ title: "NLP 基礎 — 機器學習核心算法與機率模型"
 date: 2026-03-09
 day: Day1-Day2
 tags: [NLP, ML, Day1, Day2]
-status: todo
+status: in-progress
 chapter: "§3, §4"
 ---
 
 # 02 — NLP 基礎：機器學習核心算法與機率模型
 
-> tags: #NLP #ML #Day1 #Day2 #todo
+> tags: #NLP #ML #Day1 #Day2 #in-progress
 > 對應課程章節：§3 機器學習速成 + §4 機率生成模型與分類模型
+> 原始講義：[PNLP上課筆記_2026-03-09.pdf](assets/PNLP上課筆記_2026-03-09.pdf)
+> 主要來源頁碼：24–31, 36–37
 
 ---
 
-## 2.1 決策樹 (Decision Tree) 在 NLP 的應用
+## 2.1 文本分類的基礎模型路線
 
 ### 💡 思考
-- 決策樹如何用於文本分類？其優勢與限制？
-- 在 NLP 場景中，決策樹的特徵通常是什麼？
-- 過擬合 (Overfitting) 在文本分類中如何表現？
+- 為什麼課程同時涵蓋 Naive Bayes、SVM、XGBoost、RNN 與 BERT？
+- 企業專案中，baseline 為什麼通常不是直接從大型模型開始？
 
 ### 📌 重點
-- 決策樹原理：
-- 特徵選擇：
-- 剪枝策略：
-- 
+- 課堂實務流程反映典型 NLP 專案做法：
+  - 先用 TF-IDF + 傳統分類器做 baseline。
+  - 再導入 RNN 或 BERT 做效果提升。
+- 經典模型重點在低成本、快迭代、可解釋；深度模型重點在語境理解與更高上限。
 
 ### 🔧 實作
 ```python
-# 來源：
-# 用途：決策樹文本分類
+# 來源：課程講義 PDF 第 24-31 頁
+# 用途：保存文本分類模型光譜
 
-from sklearn.tree import DecisionTreeClassifier
-
+model_spectrum = {
+	"traditional": ["Naive Bayes", "Logistic Regression", "SVM", "XGBoost"],
+	"deep_learning": ["RNN", "BERT"],
+}
 ```
 
 ### 📚 延伸
-- [scikit-learn DecisionTree](https://scikit-learn.org/stable/modules/tree.html)
+- [scikit-learn](https://scikit-learn.org/stable/)
+- [Transformers](https://huggingface.co/docs/transformers/)
 
 ---
 
-## 2.2 隨機森林 (Random Forest) 在 NLP 的應用
+## 2.2 Naive Bayes、SVM 與 XGBoost 的角色分工
 
 ### 💡 思考
-- Random Forest 相比單一決策樹的優勢？
-- Bagging 策略如何提升文本分類的穩定性？
+- 為什麼 Naive Bayes 對 TF-IDF 特徵常常表現不差？
+- SVM 與 XGBoost 各自適合什麼任務邊界？
 
 ### 📌 重點
-- 隨機森林原理：
-- Bagging 策略：
-- 特徵重要性排序：
-- 
+- Naive Bayes：適合稀疏高維特徵，是文本分類最常見 baseline 之一。
+- SVM：在中小型文本分類任務中穩定，常與 TF-IDF 搭配。
+- XGBoost：適合拿來做更強的表格化特徵分類比較，或混合多種特徵。
 
 ### 🔧 實作
 ```python
-# 來源：
-# 用途：隨機森林文本分類
-
-from sklearn.ensemble import RandomForestClassifier
-
-```
-
-### 📚 延伸
-- [scikit-learn RandomForest](https://scikit-learn.org/stable/modules/ensemble.html#random-forests)
-
----
-
-## 2.3 梯度下降 (Gradient Descent) 最佳化策略
-
-### 💡 思考
-- SGD、Mini-batch GD、Adam 各自的適用場景？
-- Learning Rate 的選擇對 NLP 模型訓練有什麼影響？
-- 為什麼深度學習中 Adam 優化器最為普及？
-
-### 📌 重點
-- Gradient Descent 原理：
-- SGD vs Adam：
-- Learning Rate 調整策略：
-- 
-
-### 🔧 實作
-```python
-# 來源：
-# 用途：梯度下降視覺化 / 不同優化器比較
-
-```
-
-### 📚 延伸
-- [An overview of gradient descent optimization algorithms](https://ruder.io/optimizing-gradient-descent/)
-
----
-
-## 2.4 貝氏分類 (Bayesian Classification) 在中文語意分析的應用
-
-### 💡 思考
-- 貝氏定理在文本分類中如何運作？
-- Naive Bayes 的「Naive」假設在中文文本上合理嗎？
-- 中文語意分析與英文的差異有哪些？
-
-### 📌 重點
-- 貝氏定理：$P(A|B) = \frac{P(B|A) \cdot P(A)}{P(B)}$
-- Naive Bayes 假設：
-- 中文應用考量：
-- 
-
-### 🔧 實作
-```python
-# 來源：
-# 用途：Naive Bayes 中文文本分類
+# 來源：課程講義 PDF 第 25, 29, 31 頁
+# 用途：傳統分類 baseline 依賴
 
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.svm import LinearSVC
 
+# import xgboost as xgb
 ```
 
 ### 📚 延伸
-- [scikit-learn Naive Bayes](https://scikit-learn.org/stable/modules/naive_bayes.html)
+- [Naive Bayes](https://scikit-learn.org/stable/modules/naive_bayes.html)
+- [LinearSVC](https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html)
 
 ---
 
-## 2.5 HMM（隱馬爾可夫模型）與 Transformer 的對比
+## 2.3 梯度下降、RNN 與 BERT 的訓練觀念
 
 ### 💡 思考
-- HMM 在 NLP 中的經典應用場景（如 POS tagging）？
-- 為什麼 Transformer 能取代 HMM 和 RNN？
-- Self-Attention 相比 HMM 的狀態轉移有何優勢？
+- 深度模型和傳統模型最大的訓練差異在哪裡？
+- `max_len`、batch size、validation split 為什麼在 BERT 任務中特別重要？
 
 ### 📌 重點
-- HMM 模型：
-- Transformer 架構：
-- 兩者比較：
-
-| 特性 | HMM | Transformer |
-|---|---|---|
-| 序列建模 | | |
-| 長距離依賴 | | |
-| 平行運算 | | |
-| 訓練效率 | | |
+- RNN 與 BERT 都依賴梯度下降類最佳化器。
+- 課堂中 BERT 訓練重點包含：載入資料、切分訓練驗證集、決定 `max_len`、建立 Dataset / Dataloader、訓練與未見資料評估。
+- RNN 課程則強調 K-Fold、Save / Load 與 Fine-Tuning。
 
 ### 🔧 實作
 ```python
-# 來源：
-# 用途：HMM vs Transformer 對比實驗
+# 來源：課程講義 PDF 第 28-29, 36-37 頁
+# 用途：深度文本分類訓練流程索引
 
+deep_training_steps = [
+	"load_dataset",
+	"prepare_train_valid_split",
+	"decide_max_len",
+	"build_dataset_and_dataloader",
+	"train_model",
+	"evaluate_on_unseen_data",
+]
 ```
 
 ### 📚 延伸
-- [Hidden Markov Models 教學](https://web.stanford.edu/~jurafsky/slp3/A.pdf)
+- [Adam optimizer](https://pytorch.org/docs/stable/generated/torch.optim.Adam.html)
+- [PyTorch DataLoader](https://pytorch.org/docs/stable/data.html)
+
+---
+
+## 2.4 Multi-Class 與 Multi-Label 問題定義
+
+### 💡 思考
+- 一筆資料只能有一個標籤，和可同時擁有多個標籤，在標註與評估上差異多大？
+- 哪些企業文本任務更符合 multi-label？
+
+### 📌 重點
+- Multi-Class：一筆資料只屬於單一類別。
+- Multi-Label：一筆資料可同時屬於多個類別。
+- 課堂中的說明例子包含垃圾郵件判斷、正中負情感分類、新聞多主題標註與電影多類型標註。
+
+### 🔧 實作
+```python
+# 來源：課程講義 PDF 第 30 頁
+# 用途：分類問題定義範例
+
+classification_tasks = {
+	"multi_class": ["spam detection", "sentiment 3-way classification"],
+	"multi_label": ["news topic tagging", "movie genre tagging"],
+}
+```
+
+### 📚 延伸
+- [Multiclass and multilabel algorithms](https://scikit-learn.org/stable/modules/multiclass.html)
+
+---
+
+## 2.5 從傳統 NLP 到 Transformer 的演進脈絡
+
+### 💡 思考
+- 為什麼這門課沒有直接從 LLM 開始，而是先經過 TF-IDF、Bayes、RNN？
+- Transformer 相對前代模型，真正改變了什麼？
+
+### 📌 重點
+- 傳統 NLP 方法擅長快速建立可解釋 baseline。
+- RNN 引入序列建模，但在長距依賴與平行化上有限制。
+- BERT / Transformer 讓上下文表示能力大幅提升，成為後續 RAG 與 Agent 的技術基礎。
+
+### 🔧 實作
+```python
+# 來源：課程講義 PDF 第 17, 24-29, 36-38 頁
+# 用途：保存模型演進順序
+
+evolution_path = [
+	"Bag of Words / TF-IDF",
+	"Naive Bayes / SVM / XGBoost",
+	"RNN / LSTM",
+	"BERT / Transformer",
+	"RAG / Agent / Fine-tuning",
+]
+```
+
+### 📚 延伸
+- [Attention Is All You Need](https://arxiv.org/abs/1706.03762)
+- [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/)
 
 ---
 
