@@ -9,16 +9,16 @@
 
 ## 願景
 
-```mermaid
+:::mermaid
 graph LR
-    A[📖 學習<br>課程/書籍/文章] --> B[📝 記錄<br>結構化筆記]
+    A[� 學習<br>課程/YouTube/文章] --> B[📝 記錄<br>結構化筆記]
     C[💼 工作<br>專案/問題解決] --> B
     D[🌐 觀察<br>趨勢/研討會] --> B
     B --> E[🧩 提取<br>概念卡/SOP]
     E --> F[🏗️ 架構<br>設計文件]
     F --> G[🤖 Bot Knowledge<br>AI 機器人大腦]
     style G fill:#f9a825,stroke:#f57f17,color:#000
-```
+:::
 
 > 💡 這個知識庫不只是筆記倉庫，而是一套**知識流水線**：
 > 從「輸入」（學習 / 工作 / 觀察）→「處理」（記錄 / 提取 / 架構化）→「輸出」（AI Bot 的可用知識）
@@ -38,7 +38,7 @@ AI-Knowledge-Base/
 ├─ 06_Datasets/        ← 資料集說明與來源
 ├─ 07_Diagrams/        ← 架構圖 / 流程圖
 ├─ 08_Bot_Knowledge/   ← Bot 知識庫素材（最終輸出）
-├─ 10_Learning/        ← 技術學習筆記（書籍 / 線上課程 / 文章）
+├─ 10_Learning/        ← 技術學習筆記（YouTube / 線上課程 / 文章）
 ├─ 11_Projects/        ← 工作專案經驗
 ├─ 12_SOP/             ← 個人 SOP / 工具備忘
 ├─ 13_Insights/        ← 產業趨勢 / 技術觀點
@@ -79,7 +79,7 @@ AI-Knowledge-Base/
 
 | 領域 | 入口 | 說明 |
 |---|---|---|
-| 技術學習 | [10_Learning/](10_Learning/README.md) | 書籍摘要、線上課程、文章筆記 |
+| 技術學習 | [10_Learning/](10_Learning/README.md) | YouTube 筆記、線上課程、文章筆記 |
 | 工作專案 | [11_Projects/](11_Projects/README.md) | 專案經驗、技術決策、踩坑紀錄 |
 | 個人 SOP | [12_SOP/](12_SOP/README.md) | 工具備忘、環境設定、工作流程 |
 | 產業觀點 | [13_Insights/](13_Insights/README.md) | 趨勢分析、研討會心得、技術反思 |
@@ -117,11 +117,11 @@ AI-Knowledge-Base/
 
 ## 知識流水線
 
-```mermaid
+:::mermaid
 graph TD
     subgraph 知識輸入來源
         S1[📚 外訓課程]
-        S2[📖 書籍文章]
+        S2[� YouTube / 文章]
         S3[🎓 線上課程]
         S4[💼 工作專案]
         S5[🎤 研討會]
@@ -153,4 +153,4 @@ graph TD
     P3 --> BOT
 
     style BOT fill:#f9a825,stroke:#f57f17,color:#000
-```
+:::
