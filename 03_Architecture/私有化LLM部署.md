@@ -29,6 +29,7 @@ graph TB
         K[員工對話資料] --> L[RLHF / 自我微調]
         L --> B
     end
+    classDef default color:#000
 ```
 
 ## 核心流程

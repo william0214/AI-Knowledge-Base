@@ -28,6 +28,7 @@ graph TB
         I --> J[API Gateway]
         J --> K[Dashboard / Bot / App]
     end
+    classDef default color:#000
 ```
 
 ## 核心元件

@@ -63,12 +63,12 @@ graph TD
         BB --> ANS[AI Bot 回答]
     end
 
-    style RAW fill:#e3f2fd,stroke:#1976d2
-    style DIG fill:#fff3e0,stroke:#f57c00
-    style REV fill:#e8f5e9,stroke:#388e3c
-    style REJ fill:#ffebee,stroke:#d32f2f
-    style NEO fill:#d1c4e9,stroke:#7b1fa2
-    style VDB fill:#b2dfdb,stroke:#00695c
+    style RAW fill:#e3f2fd,stroke:#1976d2,color:#000
+    style DIG fill:#fff3e0,stroke:#f57c00,color:#000
+    style REV fill:#e8f5e9,stroke:#388e3c,color:#000
+    style REJ fill:#ffebee,stroke:#d32f2f,color:#000
+    style NEO fill:#d1c4e9,stroke:#7b1fa2,color:#000
+    style VDB fill:#b2dfdb,stroke:#00695c,color:#000
     style ANS fill:#f9a825,stroke:#f57f17,color:#000
 ```
 
